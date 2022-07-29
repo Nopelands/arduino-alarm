@@ -17,7 +17,7 @@
 #define C 9
 #define D 10
 #define E 11
-#define F 12
+#define FLED 12
 #define G 6
 
 #define PASSWORD "senha"
@@ -56,7 +56,7 @@ void setup() {
   pinMode(C, OUTPUT);
   pinMode(D, OUTPUT);
   pinMode(E, OUTPUT);
-  pinMode(F, OUTPUT);
+  pinMode(FLED, OUTPUT);
   pinMode(G, OUTPUT);
   
   Serial.println("Press the button if you want to initialize the security system");
@@ -84,12 +84,13 @@ void loop() {
     enterPassword();
   break;
   case PASSFAIL_STATE:
-    Serial.println("Please try again the password:");
+    Serial.println("Please try again:");
     retryPassword();
   break;
   case FAILED_STATE:
     Serial.println("Activating invasion alert!");
     alertInvasion();
+  break;
   case RESET_STATE:
     Serial.println("Ok. Deactivating System...");
     Serial.println("Press the button if you want to re-initialize the security system");
@@ -121,8 +122,8 @@ void initializeSystem() {
 void activateSensor() {
   int pir_read = digitalRead(PIR);
   int ldr_read = analogRead(A0);
+  Serial.println(pir_read);
   if (pir_read or (ldr_read - previous_ldr > 300)) {
-    //buzzer
     state = TRIGGERED_STATE;
   }
   previous_ldr = ldr_read;
@@ -200,7 +201,7 @@ void reset() {
   digitalWrite(C, 0);
   digitalWrite(D, 0);
   digitalWrite(E, 0);
-  digitalWrite(F, 0);
+  digitalWrite(FLED, 0);
   digitalWrite(G, 0);
   state = INITIAL_STATE;
 }
@@ -212,6 +213,6 @@ void writeDisplay(int number) {
   digitalWrite(C, display[2]);
   digitalWrite(D, display[3]);
   digitalWrite(E, display[4]);
-  digitalWrite(F, display[5]);
+  digitalWrite(FLED, display[5]);
   digitalWrite(G, display[6]);
 }  
